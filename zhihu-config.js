@@ -76,4 +76,35 @@
         if (root.getAttribute('data-theme') !== t) root.setAttribute('data-theme', t);
     }).observe(root, { attributes: true, attributeFilter: ['data-theme'] });
 
+    // 移除 AI 总结卡片
+    function removeAISummary() {
+        var jumpBtn = document.querySelector('[data-testid="Button:zhida_message_block_jump_entrance_top"]');
+        if (!jumpBtn) return;
+        var scroller = jumpBtn.closest('[data-custom-scroller="true"]');
+        if (!scroller) return;
+        var card = scroller.parentElement;
+        if (card) card = card.parentElement;
+        if (card) card = card.parentElement;
+        if (card && card !== document.body && !card.hasAttribute('data-custom-scroller')) {
+            card.remove();
+        }
+    }
+
+    // 等 body 就绪后监听
+    var aiTimer = null;
+    function debounceRemove() {
+        if (aiTimer) return;
+        aiTimer = setTimeout(function () { aiTimer = null; removeAISummary(); }, 500);
+    }
+
+    if (document.body) {
+        removeAISummary();
+        new MutationObserver(debounceRemove).observe(document.body, { childList: true, subtree: true });
+    } else {
+        document.addEventListener('DOMContentLoaded', function () {
+            removeAISummary();
+            new MutationObserver(debounceRemove).observe(document.body, { childList: true, subtree: true });
+        });
+    }
+
 })();

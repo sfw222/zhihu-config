@@ -10,7 +10,7 @@
 
 ## 安装
 
-[点击安装 zhihu-config.js](https://raw.githubusercontent.com/sfw222/zhihu-config/main/zhihu-config.js)
+[点击安装 zhihu-config.user.js](https://raw.githubusercontent.com/sfw222/zhihu-config/main/zhihu-config.user.js)
 
 ## 使用
 

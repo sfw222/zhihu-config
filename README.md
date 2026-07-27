@@ -21,7 +21,7 @@
 - GIF 自动播放
 - 引用角标高亮
 
-**安装：** [点击安装 知乎美化.js](https://raw.githubusercontent.com/sfw222/zhihu-config/main/知乎美化.js)
+**安装：** [点击安装 知乎美化3.js](https://raw.githubusercontent.com/sfw222/zhihu-config/main/知乎美化3.js)
 
 ## 使用
 

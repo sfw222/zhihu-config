@@ -51,6 +51,52 @@
     // 首次加载应用主题
     applyTheme(current);
 
+    // 搜索页文章目录树修复：将目录树从覆盖正文改为折叠/展开式内联显示
+    const tocStyle = document.createElement('style');
+    tocStyle.id = 'zhihu-search-toc-fix';
+    tocStyle.textContent = `
+        /* 搜索结果页：目录树按钮样式调整 */
+        .SearchResult-Card .Post-RichTextContainer .css-14qjjyh,
+        .SearchResult-Card .RichContent-inner .css-14qjjyh {
+            position: relative !important;
+            z-index: 1;
+        }
+        /* 搜索结果页：目录面板改为内联定位，不覆盖正文 */
+        .SearchResult-Card .Post-RichTextContainer .Catalog,
+        .SearchResult-Card .RichContent-inner .Catalog,
+        .SearchResult-Card .Post-RichTextContainer [class*="Catalog"],
+        .SearchResult-Card .RichContent-inner [class*="Catalog"] {
+            position: relative !important;
+            float: none !important;
+            width: 100% !important;
+            max-height: none !important;
+            margin-bottom: 12px !important;
+            border-radius: 8px !important;
+            overflow: hidden;
+        }
+        /* 搜索结果页：移除目录侧边栏的固定定位 */
+        .SearchResult-Card .Post-RichTextContainer .Catalog-content,
+        .SearchResult-Card .RichContent-inner .Catalog-content,
+        .SearchResult-Card [class*="CatalogWrapper"] {
+            position: relative !important;
+            top: auto !important;
+            left: auto !important;
+            right: auto !important;
+            transform: none !important;
+            width: 100% !important;
+            max-height: 300px !important;
+            overflow-y: auto !important;
+        }
+        /* 搜索结果页：目录项样式 */
+        .SearchResult-Card .Catalog-item,
+        .SearchResult-Card [class*="CatalogItem"] {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+    `;
+    (document.head || root).appendChild(tocStyle);
+
     // 深色模式补丁 CSS
     if (current === 'dark') {
         const s = document.createElement('style');

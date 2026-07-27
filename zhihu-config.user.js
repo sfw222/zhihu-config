@@ -68,6 +68,9 @@
             html[data-theme="dark"]:where(.ModalWrap-itemBtn,.SearchSubTabs-item,.DraftHistory-revert,.Pc-feedAd-link-btn):is(:hover,:focus-visible,.is-active){color:var(--GBL01A,#558eff)!important}
             html[data-theme="dark"]:where(.SearchTabs-customFilter .tag-selected,.highlight-wrap-checking){background-color:rgba(85,142,255,.1)!important}
             html[data-theme="dark"]:where(.AnswerForm-fullscreenBackdrop,.ImageView.is-active,.ImageGallery.is-active){background-color:rgba(0,0,0,.65)!important}
+            html[data-theme="dark"] .AppHeader{background-color:var(--GBK99A,#191b1f)!important}
+            html[data-theme="dark"] .AppHeader .Input{background-color:var(--GBK10A,#212429)!important;color:var(--GBK02A,#fff)!important}
+            html[data-theme="dark"] .AppHeader .Input::placeholder{color:var(--GBK05A,#888d96)!important}
         `;
         (document.head || root).appendChild(s);
     }

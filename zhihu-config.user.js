@@ -51,51 +51,192 @@
     // 首次加载应用主题
     applyTheme(current);
 
-    // 搜索页文章目录树修复：将目录树从覆盖正文改为折叠/展开式内联显示
-    const tocStyle = document.createElement('style');
-    tocStyle.id = 'zhihu-search-toc-fix';
-    tocStyle.textContent = `
-        /* 搜索结果页：目录树按钮样式调整 */
-        .SearchResult-Card .Post-RichTextContainer .css-14qjjyh,
-        .SearchResult-Card .RichContent-inner .css-14qjjyh {
-            position: relative !important;
-            z-index: 1;
+    // 搜索页文章目录树修复：拦截 Modal 目录弹窗，注入为文章内联侧边栏
+    (function fixSearchToc() {
+        // 注入侧边栏样式
+        var tocCss = document.createElement('style');
+        tocCss.id = 'zhihu-inline-toc-style';
+        tocCss.textContent = `
+            /* 搜索页内联目录侧边栏容器 */
+            .zhihu-inline-toc {
+                float: right;
+                width: 220px;
+                margin: 0 0 12px 16px;
+                padding: 12px;
+                border-radius: 8px;
+                background: var(--GBK10A, #212429);
+                border: 1px solid var(--GBK09A, #282b30);
+                font-size: 13px;
+                line-height: 1.6;
+                max-height: 400px;
+                overflow-y: auto;
+            }
+            .zhihu-inline-toc-title {
+                font-weight: 600;
+                font-size: 14px;
+                margin-bottom: 8px;
+                color: var(--GBK02A, #fff);
+            }
+            .zhihu-inline-toc-item {
+                display: block;
+                padding: 4px 8px;
+                color: var(--GBK03A, #c2c6cf);
+                text-decoration: none;
+                border-radius: 4px;
+                cursor: pointer;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+            }
+            .zhihu-inline-toc-item:hover {
+                background: var(--GBK09A, #282b30);
+                color: var(--GBL01A, #558eff);
+            }
+            .zhihu-inline-toc-item.is-h1 {
+                font-weight: 600;
+                padding-left: 4px;
+            }
+            .zhihu-inline-toc-item.is-h2 {
+                padding-left: 16px;
+            }
+            .zhihu-inline-toc-item.is-h3 {
+                padding-left: 28px;
+                font-size: 12px;
+            }
+            /* 隐藏搜索页的目录浮动按钮（已被内联侧边栏替代） */
+            .SearchResult-Card .zhihu-inline-toc-btn-hidden {
+                display: none !important;
+            }
+            /* 小屏幕不浮动，改为顶部排列 */
+            @media (max-width: 800px) {
+                .zhihu-inline-toc {
+                    float: none;
+                    width: 100%;
+                    margin: 0 0 12px 0;
+                    max-height: 200px;
+                }
+            }
+        `;
+        (document.head || document.documentElement).appendChild(tocCss);
+
+        // 拦截目录 Modal：当检测到目录弹窗出现时，提取内容注入文章卡片
+        function handleTocModal(modal) {
+            // 仅在搜索页生效
+            if (!location.pathname.startsWith('/search')) return;
+
+            var titleEl = modal.querySelector('.Modal-title');
+            if (!titleEl || titleEl.textContent.trim() !== '目录') return;
+
+            // 防止重复处理
+            if (modal.dataset.inlineTocProcessed) return;
+            modal.dataset.inlineTocProcessed = '1';
+
+            // 提取目录项
+            var items = modal.querySelectorAll('.css-46sm9v');
+            if (items.length === 0) return;
+
+            // 找到当前展开的文章卡片
+            var expandedCard = document.querySelector('.SearchResult-Card .RichContent-inner:not(.is-collapsed)');
+            if (!expandedCard) {
+                // 备选：找展开的 ContentItem
+                expandedCard = document.querySelector('.SearchResult-Card .ContentItem');
+            }
+            if (!expandedCard) return;
+
+            // 找到文章正文区域
+            var articleBody = expandedCard.querySelector('[itemprop="articleBody"]') ||
+                              expandedCard.querySelector('.RichText') ||
+                              expandedCard.querySelector('[id="content"]');
+            if (!articleBody) return;
+
+            // 检查是否已经注入过
+            if (expandedCard.querySelector('.zhihu-inline-toc')) return;
+
+            // 构建内联目录
+            var tocDiv = document.createElement('div');
+            tocDiv.className = 'zhihu-inline-toc';
+
+            var tocTitle = document.createElement('div');
+            tocTitle.className = 'zhihu-inline-toc-title';
+            tocTitle.textContent = '目录';
+            tocDiv.appendChild(tocTitle);
+
+            items.forEach(function (item, index) {
+                var textEl = item.querySelector('.css-1nna83t');
+                if (!textEl) return;
+                var text = textEl.textContent.trim();
+                var link = document.createElement('a');
+                link.className = 'zhihu-inline-toc-item';
+                // 第一个是文章标题，标记为 h1 级别
+                if (index === 0) {
+                    link.className += ' is-h1';
+                } else {
+                    link.className += ' is-h2';
+                }
+                link.textContent = text;
+                link.title = text;
+                // 点击跳转到对应标题
+                link.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    var headings = articleBody.querySelectorAll('h1, h2, h3, h4');
+                    // index 0 是文章标题本身，跳到第一个 h1
+                    var targetIndex = index === 0 ? 0 : index - 1;
+                    if (headings[targetIndex]) {
+                        headings[targetIndex].scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
+                });
+                tocDiv.appendChild(link);
+            });
+
+            // 注入到文章正文开头
+            articleBody.insertBefore(tocDiv, articleBody.firstChild);
+
+            // 关闭原始 Modal（模拟点击遮罩层或关闭按钮）
+            var backdrop = document.querySelector('.Modal-backdrop, .css-qxzzje');
+            if (backdrop) {
+                // 尝试找到关闭按钮
+                var closeBtn = modal.querySelector('.Modal-closeButton, [aria-label="关闭"]');
+                if (closeBtn) {
+                    closeBtn.click();
+                } else {
+                    // 隐藏 Modal
+                    modal.style.display = 'none';
+                    // 隐藏遮罩层
+                    var overlay = modal.previousElementSibling;
+                    if (overlay && overlay.classList.contains('Modal-backdrop')) {
+                        overlay.style.display = 'none';
+                    }
+                }
+            }
         }
-        /* 搜索结果页：目录面板改为内联定位，不覆盖正文 */
-        .SearchResult-Card .Post-RichTextContainer .Catalog,
-        .SearchResult-Card .RichContent-inner .Catalog,
-        .SearchResult-Card .Post-RichTextContainer [class*="Catalog"],
-        .SearchResult-Card .RichContent-inner [class*="Catalog"] {
-            position: relative !important;
-            float: none !important;
-            width: 100% !important;
-            max-height: none !important;
-            margin-bottom: 12px !important;
-            border-radius: 8px !important;
-            overflow: hidden;
+
+        // 监听 DOM 变化，检测目录 Modal 出现
+        var tocObserver = new MutationObserver(function (mutations) {
+            for (var i = 0; i < mutations.length; i++) {
+                var added = mutations[i].addedNodes;
+                for (var j = 0; j < added.length; j++) {
+                    var node = added[j];
+                    if (node.nodeType !== 1) continue;
+                    // 直接是 Modal 容器
+                    if (node.querySelector && node.querySelector('.Modal-title')) {
+                        handleTocModal(node);
+                    }
+                    // Modal 内部的子节点
+                    if (node.classList && node.classList.contains('Modal-title')) {
+                        handleTocModal(node.closest('.css-qxzzje') || node.parentElement);
+                    }
+                }
+            }
+        });
+
+        if (document.body) {
+            tocObserver.observe(document.body, { childList: true, subtree: true });
+        } else {
+            document.addEventListener('DOMContentLoaded', function () {
+                tocObserver.observe(document.body, { childList: true, subtree: true });
+            });
         }
-        /* 搜索结果页：移除目录侧边栏的固定定位 */
-        .SearchResult-Card .Post-RichTextContainer .Catalog-content,
-        .SearchResult-Card .RichContent-inner .Catalog-content,
-        .SearchResult-Card [class*="CatalogWrapper"] {
-            position: relative !important;
-            top: auto !important;
-            left: auto !important;
-            right: auto !important;
-            transform: none !important;
-            width: 100% !important;
-            max-height: 300px !important;
-            overflow-y: auto !important;
-        }
-        /* 搜索结果页：目录项样式 */
-        .SearchResult-Card .Catalog-item,
-        .SearchResult-Card [class*="CatalogItem"] {
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-    `;
-    (document.head || root).appendChild(tocStyle);
+    })();
 
     // 深色模式补丁 CSS
     if (current === 'dark') {

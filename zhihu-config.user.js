@@ -80,6 +80,28 @@
             html[data-theme="dark"] .RichText pre{background-color:var(--GBK10A,#212429)!important;color:var(--GBK03A,#c2c6cf)!important;border-color:var(--GBK09A,#282b30)!important}
             html[data-theme="dark"] .RichText pre code{background-color:transparent!important;border:none!important}
             html[data-theme="dark"] .css-1ptadse{color:var(--GBK05A,#888d96)!important;background-color:var(--GBK99A,#191b1f)!important;border-color:var(--GBK09A,#282b30)!important}
+            html[data-theme="dark"] .Comments-container .css-13445jb,
+            html[data-theme="dark"] .Modal-content .css-13445jb{
+                background-color:var(--GBK10A,#212429)!important;
+                color:var(--GBK03A,#c2c6cf)!important;
+                border-color:rgba(85,142,255,.18)!important;
+                box-shadow:inset 0 0 0 1px rgba(85,142,255,.08)!important;
+                animation:zhihu-dark-comment-highlight 1s linear forwards!important;
+            }
+            @keyframes zhihu-dark-comment-highlight{
+                0%{
+                    background-color:rgba(85,142,255,.18);
+                    box-shadow:inset 0 0 0 1px rgba(85,142,255,.28),0 0 0 1px rgba(85,142,255,.08);
+                }
+                60%{
+                    background-color:rgba(33,36,41,.98);
+                    box-shadow:inset 0 0 0 1px rgba(85,142,255,.18),0 0 0 1px rgba(0,0,0,.08);
+                }
+                100%{
+                    background-color:var(--GBK10A,#212429);
+                    box-shadow:inset 0 0 0 1px rgba(85,142,255,.10),0 0 0 1px rgba(0,0,0,.14);
+                }
+            }
             html[data-theme="dark"] .ContentItem-actions .VoteButton{color:var(--GBK03A,#c2c6cf)!important;background-color:transparent!important;border-color:var(--GBK09A,#282b30)!important}
             html[data-theme="dark"] .ContentItem-actions .VoteButton:hover{color:var(--GBL01A,#558eff)!important}
             html[data-theme="dark"] .ContentItem-actions .ContentItem-action{color:var(--GBK05A,#888d96)!important}

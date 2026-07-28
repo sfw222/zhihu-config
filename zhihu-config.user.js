@@ -92,7 +92,7 @@
             html[data-theme="dark"] .CommentListV2{background-color:var(--GBK99A,#191b1f)!important}
             html[data-theme="dark"] .CommentListV2-header{background-color:var(--GBK99A,#191b1f)!important}
             html[data-theme="dark"] .css-tpyajk,html[data-theme="dark"] .css-1onritu,html[data-theme="dark"] .css-34podr,html[data-theme="dark"] .css-a3pqj1{background-color:var(--GBK99A,#191b1f)!important}
-            html[data-theme="dark"] .css-13445jb,html[data-theme="dark"] .css-jp43l4,html[data-theme="dark"] .css-1kwt8l8{border-color:rgba(85,142,255,.3)!important;background-color:rgba(85,142,255,.06)!important}
+            html[data-theme="dark"] .css-13445jb,html[data-theme="dark"] .css-jp43l4,html[data-theme="dark"] .css-1kwt8l8{box-shadow:0 0 0 1px rgba(85,142,255,.3)!important;background-color:rgba(85,142,255,.06)!important}
             html[data-theme="dark"] img{filter:brightness(0.5)!important}
         `;
         (document.head || root).appendChild(s);

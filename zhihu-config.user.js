@@ -84,14 +84,6 @@
             html[data-theme="dark"] .ContentItem-actions .VoteButton:hover{color:var(--GBL01A,#558eff)!important}
             html[data-theme="dark"] .ContentItem-actions .ContentItem-action{color:var(--GBK05A,#888d96)!important}
             html[data-theme="dark"] .ContentItem-actions .ContentItem-action:hover{color:#d4d4d8!important}
-            html[data-theme="dark"] .Comments-container{background-color:var(--GBK99A,#191b1f)!important}
-            html[data-theme="dark"] .Comments-container .CommentContent{background-color:transparent!important}
-            html[data-theme="dark"] .Comments-container .InputLike,.Comments-container .Editable{background-color:var(--GBK10A,#212429)!important}
-            html[data-theme="dark"] .Comments-container input,.Comments-container textarea,.Comments-container [contenteditable]{background-color:var(--GBK10A,#212429)!important;color:#d4d4d8!important}
-            html[data-theme="dark"] .Comments-container button{background-color:var(--GBK99A,#191b1f)!important;color:var(--GBK03A,#c2c6cf)!important;border-color:var(--GBK09A,#282b30)!important}
-            html[data-theme="dark"] .CommentListV2{background-color:var(--GBK99A,#191b1f)!important}
-            html[data-theme="dark"] .CommentListV2-header{background-color:var(--GBK99A,#191b1f)!important}
-            html[data-theme="dark"] .css-tpyajk,html[data-theme="dark"] .css-1onritu,html[data-theme="dark"] .css-34podr,html[data-theme="dark"] .css-a3pqj1{background-color:var(--GBK99A,#191b1f)!important}
             html[data-theme="dark"] img{filter:brightness(0.5)!important}
         `;
         (document.head || root).appendChild(s);

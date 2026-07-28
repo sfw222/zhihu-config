@@ -76,6 +76,15 @@
             html[data-theme="dark"] .Comments-container{color:var(--GBK03A,#c2c6cf)!important}
             html[data-theme="dark"] .Comments-container .CommentContent{color:var(--GBK03A,#c2c6cf)!important}
             html[data-theme="dark"] .Comments-container a[href*="/people/"]:not(:has(img)){color:#d4d4d8!important}
+            html[data-theme="dark"] .Comments-container .Modal-content{
+                background-color:var(--GBK10A,#212429)!important;
+                color:var(--GBK03A,#c2c6cf)!important;
+                border:1px solid rgba(85,142,255,.10)!important;
+                box-shadow:0 0 0 1px rgba(0,0,0,.12),0 10px 28px rgba(0,0,0,.26)!important;
+            }
+            html[data-theme="dark"] .Comments-container .Modal-content > div{
+                background-color:transparent!important;
+            }
             html[data-theme="dark"] .RichText code{background-color:var(--GBK10A,#212429)!important;color:var(--GBK03A,#c2c6cf)!important;border-color:var(--GBK09A,#282b30)!important}
             html[data-theme="dark"] .RichText pre{background-color:var(--GBK10A,#212429)!important;color:var(--GBK03A,#c2c6cf)!important;border-color:var(--GBK09A,#282b30)!important}
             html[data-theme="dark"] .RichText pre code{background-color:transparent!important;border:none!important}

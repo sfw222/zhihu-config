@@ -130,22 +130,6 @@
         if (root.getAttribute('data-theme') !== t) root.setAttribute('data-theme', t);
     }).observe(root, { attributes: true, attributeFilter: ['data-theme'] });
 
-    // 动态修复深色模式下白色背景（针对 CSS-in-JS 生成的类）
-    if (current === 'dark') {
-        function fixWhiteBg() {
-            document.querySelectorAll('main *').forEach(function(el) {
-                var cs = getComputedStyle(el);
-                var bg = cs.backgroundColor;
-                if (bg === 'rgb(255, 255, 255)' || bg === 'rgba(255, 255, 255, 1)') {
-                    el.style.setProperty('background-color', '#191b1f', 'important');
-                }
-            });
-        }
-        setTimeout(fixWhiteBg, 300);
-        setTimeout(fixWhiteBg, 1000);
-        setTimeout(fixWhiteBg, 2000);
-    }
-
     // 移除 AI 总结卡片
     function removeAISummary() {
         var jumpBtn = document.querySelector('[data-testid="Button:zhida_message_block_jump_entrance_top"]');

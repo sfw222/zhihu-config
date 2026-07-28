@@ -72,7 +72,9 @@
             html[data-theme="dark"] .AppHeader a.is-active,html[data-theme="dark"] .AppHeader .css-c5jmln{color:var(--GBL01A,#558eff)!important}
             html[data-theme="dark"] .AppHeader .Input{background-color:var(--GBK10A,#212429)!important;color:var(--GBK02A,#fff)!important}
             html[data-theme="dark"] .AppHeader .Input::placeholder{color:var(--GBK05A,#888d96)!important}
+            html[data-theme="dark"] .Comments-container{color:var(--GBK03A,#c2c6cf)!important}
             html[data-theme="dark"] .Comments-container .CommentContent{color:var(--GBK03A,#c2c6cf)!important}
+            html[data-theme="dark"] .Comments-container a[href*="/people/"]:not(:has(img)){color:var(--GBK02A,#fff)!important}
         `;
         (document.head || root).appendChild(s);
     }

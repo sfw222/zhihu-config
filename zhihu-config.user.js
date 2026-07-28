@@ -78,7 +78,7 @@
             html[data-theme="dark"] .RichText code{background-color:var(--GBK10A,#212429)!important;color:var(--GBK03A,#c2c6cf)!important;border-color:var(--GBK09A,#282b30)!important}
             html[data-theme="dark"] .RichText pre{background-color:var(--GBK10A,#212429)!important;color:var(--GBK03A,#c2c6cf)!important;border-color:var(--GBK09A,#282b30)!important}
             html[data-theme="dark"] .RichText pre code{background-color:transparent!important;border:none!important}
-            html[data-theme="dark"] .ContentItem-actions{color:var(--GBK05A,#888d96)!important;background-color:var(--GBK99A,#191b1f)!important;border-color:var(--GBK09A,#282b30)!important}
+            html[data-theme="dark"] .ContentItem-actions[class*="css-"]{color:var(--GBK05A,#888d96)!important;background-color:var(--GBK99A,#191b1f)!important;border-color:var(--GBK09A,#282b30)!important}
             html[data-theme="dark"] .ContentItem-actions .VoteButton{color:var(--GBK03A,#c2c6cf)!important;background-color:transparent!important;border-color:var(--GBK09A,#282b30)!important}
             html[data-theme="dark"] .ContentItem-actions .VoteButton:hover{color:var(--GBL01A,#558eff)!important}
             html[data-theme="dark"] .ContentItem-actions .ContentItem-action{color:var(--GBK05A,#888d96)!important}

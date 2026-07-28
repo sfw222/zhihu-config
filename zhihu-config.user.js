@@ -84,6 +84,7 @@
             html[data-theme="dark"] .ContentItem-actions .VoteButton:hover{color:var(--GBL01A,#558eff)!important}
             html[data-theme="dark"] .ContentItem-actions .ContentItem-action{color:var(--GBK05A,#888d96)!important}
             html[data-theme="dark"] .ContentItem-actions .ContentItem-action:hover{color:#d4d4d8!important}
+            html[data-theme="dark"] img{filter:brightness(0.95) contrast(0.9)}
         `;
         (document.head || root).appendChild(s);
     }

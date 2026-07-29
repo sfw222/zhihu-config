@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         知乎设置
 // @namespace    http://tampermonkey.net/
-// @version      6.1
+// @version      6.2
 // @description  手动切换知乎深色/浅色主题（默认深色），修复少量深色模式遗漏；完全移除 AI 总结卡片，不留空白占位。
 // @author       sfw222
 // @match        https://www.zhihu.com/*
@@ -132,6 +132,8 @@
             html[data-theme="dark"] .ContentItem-actions .ContentItem-action{color:var(--GBK05A,#888d96)!important}
             html[data-theme="dark"] .ContentItem-actions .ContentItem-action:hover{color:#d4d4d8!important}
             html[data-theme="dark"] img{filter:brightness(0.5)!important}
+            html[data-theme="dark"] .SearchBar{contain:layout!important}
+            html[data-theme="dark"] .SearchBar-menu{width:100%!important}
         `;
         (document.head || root).appendChild(s);
     }

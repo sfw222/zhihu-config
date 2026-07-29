@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         知乎设置
 // @namespace    http://tampermonkey.net/
-// @version      5.7
+// @version      5.8
 // @description  手动切换知乎深色/浅色主题（默认深色），修复少量深色模式遗漏；完全移除 AI 总结卡片，不留空白占位。
 // @author       sfw222
 // @match        https://www.zhihu.com/*
@@ -102,7 +102,7 @@
             html[data-theme="dark"] .css-f9tv5t{background-color:#191b1f!important}
             html[data-theme="dark"] .css-mk7s6o{background-color:#191b1f!important}
             html[data-theme="dark"] .css-127i0sx{background-color:#191b1f!important}
-            html[data-theme="dark"] .css-3ibr72{background-color:#191b1f!important}
+            html[data-theme="dark"] .css-3ibr72{background-color:#191b1f!important;border:1px solid rgba(255,255,255,.06)!important}
             html[data-theme="dark"] .css-9511cm,html[data-theme="dark"] .css-dilx2p,html[data-theme="dark"] .css-11oa45q,html[data-theme="dark"] .css-2sopzd,html[data-theme="dark"] .css-44kk6u,html[data-theme="dark"] .css-1pariuy{background-color:#191b1f!important}
             html[data-theme="dark"] .css-9511cm,html[data-theme="dark"] .css-dilx2p,html[data-theme="dark"] .css-11oa45q,html[data-theme="dark"] .Card,html[data-theme="dark"] .css-12tmx22{border:1px solid rgba(255,255,255,.06)!important}
             html[data-theme="dark"] .Comments-container .css-13445jb,

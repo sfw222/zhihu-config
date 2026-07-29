@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         知乎设置
 // @namespace    http://tampermonkey.net/
-// @version      5.5
+// @version      5.6
 // @description  手动切换知乎深色/浅色主题（默认深色），修复少量深色模式遗漏；完全移除 AI 总结卡片，不留空白占位。
 // @author       sfw222
 // @match        https://www.zhihu.com/*
@@ -79,7 +79,6 @@
             html[data-theme="dark"] .css-427st7:hover,html[data-theme="dark"] .css-1caetj6:hover{color:#d4d4d8!important}
             html[data-theme="dark"] .css-va72p6{color:#d4d4d8!important}
             html[data-theme="dark"] .css-10u695f{color:#d4d4d8!important}
-            html[data-theme="dark"] .css-va72p6{color:#d4d4d8!important}
             html[data-theme="dark"] .css-r4op92{color:#d4d4d8!important}
             html[data-theme="dark"] .Comments-container{color:var(--GBK03A,#c2c6cf)!important}
             html[data-theme="dark"] .Comments-container .CommentContent{color:var(--GBK03A,#c2c6cf)!important}
@@ -98,6 +97,8 @@
             html[data-theme="dark"] .RichText pre code{background-color:transparent!important;border:none!important}
             html[data-theme="dark"] .css-1ptadse{color:var(--GBK05A,#888d96)!important;background-color:var(--GBK99A,#191b1f)!important;border-color:var(--GBK09A,#282b30)!important}
             html[data-theme="dark"] .css-1e7fksk{background-color:var(--GBK99A,#191b1f)!important}
+            html[data-theme="dark"] .css-8axkqi{background-color:#191b1f!important;border-color:var(--GBK09A,#282b30)!important}
+            html[data-theme="dark"] .css-1rd6ukm{background-color:#191b1f!important}
             html[data-theme="dark"] .css-9511cm,html[data-theme="dark"] .css-dilx2p,html[data-theme="dark"] .css-11oa45q,html[data-theme="dark"] .css-2sopzd,html[data-theme="dark"] .css-44kk6u,html[data-theme="dark"] .css-1pariuy{background-color:#191b1f!important}
             html[data-theme="dark"] .css-9511cm,html[data-theme="dark"] .css-dilx2p,html[data-theme="dark"] .css-11oa45q,html[data-theme="dark"] .Card,html[data-theme="dark"] .css-12tmx22{border:1px solid rgba(255,255,255,.06)!important}
             html[data-theme="dark"] .Comments-container .css-13445jb,

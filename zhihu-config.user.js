@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         知乎设置
 // @namespace    http://tampermonkey.net/
-// @version      6.2
+// @version      6.1
 // @description  手动切换知乎深色/浅色主题（默认深色），修复少量深色模式遗漏；完全移除 AI 总结卡片，不留空白占位。
 // @author       sfw222
 // @match        https://www.zhihu.com/*
@@ -141,22 +141,6 @@
         var t = GM_getValue('theme', 'dark');
         if (root.getAttribute('data-theme') !== t) root.setAttribute('data-theme', t);
     }).observe(root, { attributes: true, attributeFilter: ['data-theme'] });
-
-    // 防止 switchHome 等操作导致 React 重渲染时出现白闪
-    if (current === 'dark') {
-        // 拦截 outerHTML 写入，阻止知乎增强脚本的 switchHome 摧毁 DOM
-        var origDesc = Object.getOwnPropertyDescriptor(Element.prototype, 'outerHTML');
-        if (origDesc) {
-            Object.defineProperty(Element.prototype, 'outerHTML', {
-                set: function (v) {
-                    // 仅拦截 header 内 nav 元素的 outerHTML 写入（switchHome 的目标）
-                    if (this.closest && this.closest('header.AppHeader')) return;
-                    origDesc.set.call(this, v);
-                },
-                get: origDesc.get
-            });
-        }
-    }
 
     // 移除 AI 总结卡片
     function removeAISummary() {

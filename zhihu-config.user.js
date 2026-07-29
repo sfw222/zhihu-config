@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         知乎设置
 // @namespace    http://tampermonkey.net/
-// @version      6.1
+// @version      6.2
 // @description  手动切换知乎深色/浅色主题（默认深色），修复少量深色模式遗漏；完全移除 AI 总结卡片，不留空白占位。
 // @author       sfw222
 // @match        https://www.zhihu.com/*
@@ -144,21 +144,13 @@
 
     // 防止 switchHome 等操作导致 React 重渲染时出现白闪
     if (current === 'dark') {
-        new MutationObserver(function () {
-            var bg = getComputedStyle(root).backgroundColor;
-            if (bg !== 'rgb(25, 27, 31)') {
-                root.style.setProperty('background-color', '#191b1f', 'important');
-                document.body.style.setProperty('background-color', '#191b1f', 'important');
-            }
-        }).observe(root, { attributes: true, attributeFilter: ['style', 'class'] });
-
-        // 拦截 outerHTML 写入，在 React 重渲染前锁定背景色
+        // 拦截 outerHTML 写入，阻止知乎增强脚本的 switchHome 摧毁 DOM
         var origDesc = Object.getOwnPropertyDescriptor(Element.prototype, 'outerHTML');
         if (origDesc) {
             Object.defineProperty(Element.prototype, 'outerHTML', {
                 set: function (v) {
-                    root.style.setProperty('background-color', '#191b1f', 'important');
-                    if (document.body) document.body.style.setProperty('background-color', '#191b1f', 'important');
+                    // 仅拦截 header 内 nav 元素的 outerHTML 写入（switchHome 的目标）
+                    if (this.closest && this.closest('header.AppHeader')) return;
                     origDesc.set.call(this, v);
                 },
                 get: origDesc.get

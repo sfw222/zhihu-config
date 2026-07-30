@@ -131,6 +131,7 @@
             html[data-theme="dark"] .ContentItem-actions .ContentItem-action{color:var(--GBK05A,#888d96)!important}
             html[data-theme="dark"] .ContentItem-actions .ContentItem-action:hover{color:#d4d4d8!important}
             html[data-theme="dark"] img{filter:brightness(0.5)!important}
+            html[data-theme="dark"] .ContentItem-title{color:#c0c0c8!important}
             html[data-theme="dark"] .SearchBar{contain:layout!important}
             html[data-theme="dark"] .SearchBar-menu{width:100%!important}
         `;

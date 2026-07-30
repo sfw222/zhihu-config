@@ -58,7 +58,7 @@
         s.id = 'zhihu-auto-dark-mode-style';
         s.textContent = `
             html[data-theme="dark"]{color-scheme:dark;background:#191b1f!important}
-            html[data-theme="dark"] body{color:#d4d4d8!important;background:#191b1f!important}
+            html[data-theme="dark"] body{color:#a1a1aa!important;background:#191b1f!important}
             html[data-theme="dark"] #root,html[data-theme="dark"] .App{background:#191b1f!important}
             html[data-theme="dark"]:where(.jumpThird-ad-tip,.Pc-feedAd-container--mobile,.Pc-feedAd-card-sign-popup,.Pc-feedAd-card-sign-popup-menu,.Pc-feedAd-card-content,.Pc-feedAd-new-card-content,.KfeCollection-CreateSaltCard,.KfeCollection-GoodsCardNew-wrapper,.KfeCollection-GoodsCardV2,.KfeCollection-PaidConsultCard-CardWrapper,.KfeCollection-PcCollegeCard-root,.KfeCollection-PcSaltBrandCard,.KfeCollection-PayModal-wrapper,.TooltipContent--white){background-color:var(--GBK99A,#191b1f)!important;border-color:var(--GBK09A,#282b30)!important;color:var(--GBK03A,#c2c6cf)!important}
             html[data-theme="dark"]:where(.Pc-feedAd-card-title,.Pc-feedAd-new-title){color:#d4d4d8!important}

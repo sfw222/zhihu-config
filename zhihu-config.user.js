@@ -208,10 +208,11 @@
             var ps = document.createElement('style');
             ps.id = 'zhihu-settings-panel-style';
             ps.textContent = [
-                '#zhihu-settings-toggle{position:fixed;bottom:24px;right:24px;z-index:10001;width:44px;height:44px;border-radius:50%;background:rgba(24,33,34,.92);border:1px solid #334142;color:#9eaaa7;font-size:20px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s;box-shadow:0 2px 12px rgba(0,0,0,.4)}',
-                '#zhihu-settings-toggle:hover{background:rgba(31,41,42,.95);color:#65cc8c;border-color:#65cc8c;transform:scale(1.08)}',
                 '#zhihu-settings-panel{display:none;position:fixed;bottom:80px;right:24px;z-index:10000;width:260px;background:rgba(24,33,34,.96);border:1px solid #334142;border-radius:14px;box-shadow:0 8px 32px rgba(0,0,0,.5);flex-direction:column;overflow:hidden;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px)}',
-                '#zhihu-settings-panel .zh-sp-header{padding:14px 16px 10px;font-size:14px;font-weight:600;color:#d7e1de;letter-spacing:.3px}',
+                '#zhihu-settings-panel .zh-sp-header{display:flex;align-items:center;justify-content:space-between;padding:14px 16px 10px}',
+                '#zhihu-settings-panel .zh-sp-header-title{font-size:14px;font-weight:600;color:#d7e1de;letter-spacing:.3px}',
+                '#zhihu-settings-panel .zh-sp-close{width:24px;height:24px;border-radius:6px;border:none;background:transparent;color:#7f8f8b;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .15s;line-height:1}',
+                '#zhihu-settings-panel .zh-sp-close:hover{background:rgba(42,54,55,.6);color:#d7e1de}',
                 '#zhihu-settings-panel .zh-sp-divider{height:1px;background:#334142;margin:0 16px}',
                 '#zhihu-settings-panel .zh-sp-row{display:flex;align-items:center;justify-content:space-between;padding:12px 16px}',
                 '#zhihu-settings-panel .zh-sp-label{font-size:13px;color:#c8d2cf}',
@@ -250,7 +251,7 @@
             var isDark = GM_getValue('theme', 'dark') === 'dark';
 
             panel.innerHTML =
-                '<div class="zh-sp-header">知乎设置</div>' +
+                '<div class="zh-sp-header"><span class="zh-sp-header-title">知乎设置</span><button class="zh-sp-close" id="zh-sp-close">&times;</button></div>' +
                 '<div class="zh-sp-divider"></div>' +
                 '<div class="zh-sp-row"><span class="zh-sp-label">深色模式</span><button class="zh-sp-toggle' + (isDark ? ' on' : '') + '" id="zh-dark-toggle"></button></div>' +
                 '<div class="zh-sp-divider"></div>' +
@@ -260,11 +261,10 @@
 
             document.body.appendChild(panel);
 
-            // 设置按钮
-            var btn = document.createElement('button');
-            btn.id = 'zhihu-settings-toggle';
-            btn.innerHTML = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></svg>';
-            document.body.appendChild(btn);
+            // 关闭按钮
+            document.getElementById('zh-sp-close').addEventListener('click', function () {
+                panel.style.display = 'none';
+            });
 
             // 更新主题选中状态
             function updateSelection() {
@@ -279,18 +279,6 @@
                 }
             }
             updateSelection();
-
-            // 打开/关闭面板
-            btn.addEventListener('click', function () {
-                panel.style.display = panel.style.display === 'none' ? 'flex' : 'none';
-            });
-
-            // 点击面板外部关闭
-            document.addEventListener('click', function (e) {
-                if (!panel.contains(e.target) && e.target !== btn && !btn.contains(e.target)) {
-                    panel.style.display = 'none';
-                }
-            });
 
             // 深色/浅色切换
             var toggle = document.getElementById('zh-dark-toggle');

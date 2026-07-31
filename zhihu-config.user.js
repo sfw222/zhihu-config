@@ -264,6 +264,7 @@
             'html[data-theme="dark"] hr{border-color:var(--z-border,#808080)!important;background-color:var(--z-border,#808080)!important}',
             'html[data-theme="dark"] .InputLike{background-color:var(--z-bg,#191b1f)!important}',
             'html[data-theme="dark"] .ContentItem-actions.Sticky{background-color:var(--z-bg,#191b1f)!important}',
+            'html[data-theme="dark"] .ContentItem-actions.PinToolbar-actions{background-color:var(--z-bg,#191b1f)!important;border-color:var(--z-border,#282b30)!important}',
             'html[data-theme="dark"] a.css-wmwsyx{color:var(--z-bg,#191b1f)!important;background-color:var(--z-bg-surface,#f8f8fa)!important}',
             'html[data-theme="dark"] button.css-19giw7g,html[data-theme="dark"] button.css-jaevqf{border-color:var(--z-border,#ebeced)!important}',
         ].join('\n');

@@ -246,6 +246,26 @@
             'html[data-theme="dark"] img.css-1t23x0k{background-color:var(--z-bg-surface,#f8f8fa)!important}',
             'html[data-theme="dark"] .HotSearchCard-tagHot{color:var(--z-danger-text,#d95350)!important}',
             'html[data-theme="dark"] .SearchBar-input{border-color:var(--z-border,#212429)!important}',
+            /* ---- 问答页泄漏修复 ---- */
+            'html[data-theme="dark"] .QuestionHeader,html[data-theme="dark"] .QuestionHeader-footer{background-color:var(--z-bg,#191b1f)!important}',
+            'html[data-theme="dark"] .ContentItem-meta,html[data-theme="dark"] .AuthorInfo{color:var(--z-text-body,#c2c6cf)!important}',
+            'html[data-theme="dark"] .BrandQuestionSymbol,html[data-theme="dark"] .BrandQuestionSymbol-brandLink,html[data-theme="dark"] .BrandQuestionSymbol-name,html[data-theme="dark"] .BrandQuestionSymbol-logo{color:var(--z-text-soft,#929aab)!important}',
+            'html[data-theme="dark"] .BrandQuestionSymbol-divider{background-color:var(--z-border,#282b30)!important}',
+            'html[data-theme="dark"] .Tag.QuestionTopic,html[data-theme="dark"] .Tag-content,html[data-theme="dark"] .TopicLink{color:var(--z-brand,#1772f6)!important;border-color:var(--z-brand,#1772f6)!important}',
+            'html[data-theme="dark"] .Tag.QuestionTopic{background-color:var(--z-brand-subtle,rgba(23,114,246,.08))!important}',
+            'html[data-theme="dark"] .WriteAnswerButton,html[data-theme="dark"] .FollowButton{background-color:var(--z-brand,#558eff)!important}',
+            'html[data-theme="dark"] .Reward,html[data-theme="dark"] .Reward-countZero{color:var(--z-text-muted,#9196a1)!important}',
+            'html[data-theme="dark"] .Reward-rewardBtn{background-color:var(--z-danger-text,#f04567)!important}',
+            'html[data-theme="dark"] img.Avatar{background-color:var(--z-bg-surface,#ffffff)!important}',
+            'html[data-theme="dark"] blockquote{color:var(--z-text-muted,#535861)!important}',
+            'html[data-theme="dark"] .QuestionTime-xiu{color:var(--z-text-muted,#9098ac)!important}',
+            'html[data-theme="dark"] a.external{color:var(--z-brand,#09408e)!important}',
+            'html[data-theme="dark"] .AnswerFormPortalContainer{background-color:var(--z-bg-surface,#f4f6f9)!important}',
+            'html[data-theme="dark"] hr{border-color:var(--z-border,#808080)!important;background-color:var(--z-border,#808080)!important}',
+            'html[data-theme="dark"] .InputLike{background-color:var(--z-bg,#191b1f)!important}',
+            'html[data-theme="dark"] .ContentItem-actions.Sticky{background-color:var(--z-bg,#191b1f)!important}',
+            'html[data-theme="dark"] a.css-wmwsyx{color:var(--z-bg,#191b1f)!important;background-color:var(--z-bg-surface,#f8f8fa)!important}',
+            'html[data-theme="dark"] button.css-19giw7g,html[data-theme="dark"] button.css-jaevqf{border-color:var(--z-border,#ebeced)!important}',
         ].join('\n');
         (document.head || root).appendChild(s);
     }

@@ -35,6 +35,7 @@
                 '--z-bg-panel-soft': '#1b2526',
                 '--z-bg-surface': '#1f292a',
                 '--z-bg-surface-raised': '#243132',
+                '--z-bg-surface-hover': '#2a3637',
                 '--z-bg-surface-muted': '#263233',
                 '--z-bg-toast': '#05090a',
                 '--z-text-primary': '#d7e1de',
@@ -75,7 +76,7 @@
     };
 
     var ALL_VAR_KEYS = [
-        '--z-bg','--z-bg-panel','--z-bg-panel-soft','--z-bg-surface','--z-bg-surface-raised','--z-bg-surface-muted','--z-bg-toast',
+        '--z-bg','--z-bg-panel','--z-bg-panel-soft','--z-bg-surface','--z-bg-surface-raised','--z-bg-surface-hover','--z-bg-surface-muted','--z-bg-toast',
         '--z-text-primary','--z-text-on-primary','--z-text-body','--z-text-muted','--z-text-soft','--z-text-placeholder','--z-text-title',
         '--z-border','--z-border-subtle','--z-border-muted','--z-border-soft',
         '--z-brand','--z-brand-subtle','--z-active',
@@ -228,7 +229,23 @@
             'html[data-theme="dark"] .SearchBar-menu{width:100%!important}',
             'html[data-theme="dark"] .skeleton,html[data-theme="dark"] .skeleton--t02,html[data-theme="dark"] .skeleton--ease-in,html[data-theme="dark"] .css-hguyb0{background:var(--z-bg,#191b1f)!important}',
             'html[data-theme="dark"] .skeleton__line,html[data-theme="dark"] .skeleton__line--t02,html[data-theme="dark"] .css-ay5346{background:var(--z-bg-surface,#212429)!important}',
-            'html[data-theme="dark"] .css-dp2cjg{background:var(--z-bg,#191b1f)!important}'
+            'html[data-theme="dark"] .css-dp2cjg{background:var(--z-bg,#191b1f)!important}',
+            /* ---- 泄漏色修复 ---- */
+            'html[data-theme="dark"] .TopstoryItem,html[data-theme="dark"] .WriteArea,html[data-theme="dark"] .HotSearchCard,html[data-theme="dark"] .KfeCollection-CreateSaltCard,html[data-theme="dark"] .Pc-card,html[data-theme="dark"] .CreatorEntrance,html[data-theme="dark"] .Card{background-color:var(--z-bg,#191b1f)!important}',
+            'html[data-theme="dark"] .TopstoryItem,html[data-theme="dark"] .HotSearchCard,html[data-theme="dark"] .Card,html[data-theme="dark"] .Pc-card{border-color:var(--z-border,#9aaaa6)!important}',
+            'html[data-theme="dark"] .SearchBar-searchButton,html[data-theme="dark"] .AppHeader-profileEntry,html[data-theme="dark"] .Sticky button,html[data-theme="dark"] .Notifications-icon,html[data-theme="dark"] .css-f8uegh{color:var(--z-text-soft,#929aab)!important;border-color:var(--z-text-soft,#929aab)!important}',
+            'html[data-theme="dark"] .ContentItem-more,html[data-theme="dark"] .ContentItem-more svg{color:var(--z-text-muted,#5271b0)!important;border-color:var(--z-text-muted,#5271b0)!important}',
+            'html[data-theme="dark"] a.AppHeader-profileAvatar,html[data-theme="dark"] a.AppHeader-profileAvatar img,html[data-theme="dark"] a.external{background-color:var(--z-bg-surface-raised,#09408e)!important}',
+            'html[data-theme="dark"] .ProfileSideCreator,html[data-theme="dark"] footer,html[data-theme="dark"] .GlobalSideBar-footer{color:var(--z-text-muted,#8491a5)!important}',
+            'html[data-theme="dark"] .css-1lkz3hi,html[data-theme="dark"] .css-1io725t,html[data-theme="dark"] .css-1io725t svg{color:var(--z-text-muted,#373a40)!important}',
+            'html[data-theme="dark"] .HotSearchCard-change,html[data-theme="dark"] .HotSearchCard-dot{color:var(--z-text-muted,#9196a1)!important}',
+            'html[data-theme="dark"] .HotSearchCard-dot{background-color:var(--z-text-muted,#9196a1)!important}',
+            'html[data-theme="dark"] svg.Zi--Help,html[data-theme="dark"] svg.Zi--Help path{color:var(--z-text-muted,#adb0b7)!important}',
+            'html[data-theme="dark"] .css-1hj0j6m,html[data-theme="dark"] .css-eh88np,html[data-theme="dark"] .LoadingBar{background-color:var(--z-brand,#1772f6)!important}',
+            'html[data-theme="dark"] .css-so42cc,html[data-theme="dark"] .ZDI--ZhidaLogo24{color:var(--z-text-muted,#5a4df8)!important}',
+            'html[data-theme="dark"] img.css-1t23x0k{background-color:var(--z-bg-surface,#f8f8fa)!important}',
+            'html[data-theme="dark"] .HotSearchCard-tagHot{color:var(--z-danger-text,#d95350)!important}',
+            'html[data-theme="dark"] .SearchBar-input{border-color:var(--z-border,#212429)!important}',
         ].join('\n');
         (document.head || root).appendChild(s);
     }

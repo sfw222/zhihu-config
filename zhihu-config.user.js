@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         知乎设置
 // @namespace    http://tampermonkey.net/
-// @version      7.3
+// @version      7.4
 // @description  知乎深色/浅色主题切换 + 多色彩主题预设 + 悬停预览 + AI 总结卡片移除
 // @author       sfw222
 // @match        https://www.zhihu.com/*
@@ -322,13 +322,13 @@
             'html[data-theme="dark"] .BrandQuestionSymbol-divider{background-color:var(--z-border,#282b30)!important}',
             'html[data-theme="dark"] .Tag.QuestionTopic,html[data-theme="dark"] .Tag-content,html[data-theme="dark"] .TopicLink{color:var(--z-brand,#1772f6)!important;border-color:var(--z-brand,#1772f6)!important}',
             'html[data-theme="dark"] .Tag.QuestionTopic{background-color:var(--z-brand-subtle,rgba(23,114,246,.08))!important}',
-            'html[data-theme="dark"] .WriteAnswerButton,html[data-theme="dark"] .FollowButton{background-color:var(--z-brand,#558eff)!important}',
+            'html[data-theme="dark"] .WriteAnswerButton,html[data-theme="dark"] .FollowButton{background-color:var(--z-brand,#558eff)!important;color:var(--z-text-on-primary,#fff)!important}',
             'html[data-theme="dark"] .Reward,html[data-theme="dark"] .Reward-countZero{color:var(--z-text-muted,#9196a1)!important}',
             'html[data-theme="dark"] .Reward-rewardBtn{background-color:var(--z-danger-text,#f04567)!important}',
             'html[data-theme="dark"] img.Avatar{background-color:var(--z-bg-surface,#ffffff)!important}',
             'html[data-theme="dark"] blockquote{color:var(--z-text-muted,#535861)!important}',
             'html[data-theme="dark"] .QuestionTime-xiu{color:var(--z-text-muted,#9098ac)!important}',
-            'html[data-theme="dark"] a.external{color:var(--z-brand,#09408e)!important}',
+            'html[data-theme="dark"] a.external{color:var(--z-brand,#558eff)!important}',
             'html[data-theme="dark"] .AnswerFormPortalContainer{background-color:var(--z-bg-surface,#f4f6f9)!important}',
             'html[data-theme="dark"] hr{border-color:var(--z-border,#808080)!important;background-color:var(--z-border,#808080)!important}',
             'html[data-theme="dark"] .InputLike{background-color:var(--z-bg,#191b1f)!important}',

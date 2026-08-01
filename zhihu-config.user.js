@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         知乎设置
 // @namespace    http://tampermonkey.net/
-// @version      7.0
+// @version      7.1
 // @description  知乎深色/浅色主题切换 + 多色彩主题预设 + 悬停预览 + AI 总结卡片移除
 // @author       sfw222
 // @match        https://www.zhihu.com/*
@@ -72,6 +72,54 @@
                 '--z-comment-hl-100': '#1f292a',
                 '--z-highlight-active': 'rgba(101,204,140,.12)'
             }
+        },
+        'light-paper': {
+            name: '纸张浅色',
+            mode: 'light',
+            swatches: ['#f4f5f0', '#fafbf7', '#087f83', '#121716'],
+            vars: {
+                '--z-bg': '#f4f5f0',
+                '--z-bg-panel': '#fafbf7',
+                '--z-bg-panel-soft': '#f1f2ec',
+                '--z-bg-surface': '#fafbf7',
+                '--z-bg-surface-raised': '#ffffff',
+                '--z-bg-surface-hover': '#edf0e8',
+                '--z-bg-surface-muted': '#f0f2eb',
+                '--z-bg-toast': '#ffffff',
+                '--z-text-primary': '#121716',
+                '--z-text-on-primary': '#ffffff',
+                '--z-text-body': '#303a37',
+                '--z-text-muted': '#65706c',
+                '--z-text-soft': '#7d8783',
+                '--z-text-placeholder': '#9aa39f',
+                '--z-text-title': '#121716',
+                '--z-border': '#cfd4cc',
+                '--z-border-subtle': '#d8ddd5',
+                '--z-border-muted': 'rgba(174,183,174,.45)',
+                '--z-border-soft': 'rgba(174,183,174,.22)',
+                '--z-brand': '#087f83',
+                '--z-brand-subtle': '#dceff0',
+                '--z-active': '#e0ebeb',
+                '--z-img-brightness': '1',
+                '--z-shadow': '0 0 0 1px rgba(18,23,22,.05),0 8px 24px rgba(18,23,22,.08)',
+                '--z-shadow-surface': '0 14px 38px rgba(18,23,22,.06)',
+                '--z-shadow-control': '0 10px 24px rgba(18,23,22,.05)',
+                '--z-shadow-floating': '0 28px 80px rgba(18,23,22,.10)',
+                '--z-overlay': 'rgba(18,23,22,.42)',
+                '--z-logo-lens-bg': '#eef1e9',
+                '--z-success-bg': '#deeee4',
+                '--z-success-text': '#28764d',
+                '--z-warning-bg': '#f4e8d3',
+                '--z-warning-text': '#a75d11',
+                '--z-info-bg': '#dceff0',
+                '--z-info-text': '#087f83',
+                '--z-danger-bg': '#f4dfdc',
+                '--z-danger-text': '#b83c32',
+                '--z-comment-hl-0': 'rgba(8,127,131,.16)',
+                '--z-comment-hl-60': '#fafbf7',
+                '--z-comment-hl-100': '#fafbf7',
+                '--z-highlight-active': 'rgba(8,127,131,.10)'
+            }
         }
     };
 
@@ -98,6 +146,25 @@
                 root.style.removeProperty(ALL_VAR_KEYS[i]);
             }
         }
+        // 浅色预设需要开启浅色补丁；深色预设/默认则关闭
+        if (preset.mode === 'light') {
+            root.classList.add('zh-light-preset');
+        } else {
+            root.classList.remove('zh-light-preset');
+        }
+    }
+
+    // 当前主题下应生效的预设：预设模式与主题不匹配时回落默认
+    function presetFor(theme) {
+        var saved = GM_getValue('colorPreset', 'default');
+        var preset = PRESETS[saved] || PRESETS['default'];
+        if ((theme === 'dark') === (preset.mode === 'light')) return 'default';
+        return saved;
+    }
+
+    // 按已保存的主题 + 预设恢复状态（切换/SPA 导航/预览移出统一入口）
+    function applySavedState() {
+        applyPreset(presetFor(GM_getValue('theme', 'dark')));
     }
 
     // ====== 主题切换 ======
@@ -109,12 +176,7 @@
         GM_setValue('theme', theme);
         document.cookie = 'theme=' + theme + '; Path=/; Domain=.zhihu.com; Max-Age=31536000; SameSite=Lax; Secure';
         root.setAttribute('data-theme', theme);
-
-        if (theme === 'dark') {
-            applyPreset(GM_getValue('colorPreset', 'default'));
-        } else {
-            applyPreset('default');
-        }
+        applySavedState();
 
         var url = new URL(location.href);
         var hint = url.searchParams.get(PARAM) || root.getAttribute('data-theme');
@@ -133,8 +195,9 @@
     // 首次加载
     applyTheme(current);
 
-    // ====== 深色模式补丁 CSS（使用 CSS 变量）======
-    if (current === 'dark') {
+    // ====== 深色/浅色补丁 CSS（使用 CSS 变量）======
+    // 双模式：深色始终生效；浅色仅在 html 带 zh-light-preset（浅色预设）时生效
+    {
         var s = document.createElement('style');
         s.id = 'zhihu-auto-dark-mode-style';
         s.textContent = [
@@ -267,7 +330,13 @@
             'html[data-theme="dark"] .ContentItem-actions.PinToolbar-actions{background-color:var(--z-bg,#191b1f)!important;border-color:var(--z-border,#282b30)!important}',
             'html[data-theme="dark"] a.css-wmwsyx{color:var(--z-bg,#191b1f)!important;background-color:var(--z-bg-surface,#f8f8fa)!important}',
             'html[data-theme="dark"] button.css-19giw7g,html[data-theme="dark"] button.css-jaevqf{border-color:var(--z-border,#ebeced)!important}',
-        ].join('\n');
+        ].join('\n')
+        .replace(/html\[data-theme="dark"\]/g, 'html:is([data-theme="dark"],[data-theme="light"].zh-light-preset)')
+        +
+        /* 浅色预设修正：浅色色彩方案 + 主色改为品牌青 + 图片不压暗 */
+        '\nhtml[data-theme="light"].zh-light-preset{color-scheme:light;--color-primary:var(--z-brand,#087f83);--color-primary-strong:#0a6f73;--color-primary-hover:#0a6f73}'
+        +
+        '\nhtml[data-theme="light"].zh-light-preset img{filter:none!important}';
         (document.head || root).appendChild(s);
     }
 
@@ -275,7 +344,7 @@
     new MutationObserver(function () {
         var t = GM_getValue('theme', 'dark');
         if (root.getAttribute('data-theme') !== t) root.setAttribute('data-theme', t);
-        if (t === 'dark') applyPreset(GM_getValue('colorPreset', 'default'));
+        applySavedState();
     }).observe(root, { attributes: true, attributeFilter: ['data-theme'] });
 
     // ====== 移除 AI 总结卡片 ======
@@ -373,10 +442,10 @@
                 panel.style.display = 'none';
             });
 
-            // 更新主题选中状态
+            // 更新主题选中状态（跟随实际生效的预设，而非仅存储值）
             function updateSelection() {
                 var themes = panel.querySelectorAll('.zh-sp-theme');
-                var sp = GM_getValue('colorPreset', 'default');
+                var sp = presetFor(GM_getValue('theme', 'dark'));
                 for (var k = 0; k < themes.length; k++) {
                     if (themes[k].getAttribute('data-preset') === sp) {
                         themes[k].classList.add('selected');
@@ -393,6 +462,7 @@
                 var newTheme = GM_getValue('theme', 'dark') === 'dark' ? 'light' : 'dark';
                 toggle.classList.toggle('on', newTheme === 'dark');
                 applyTheme(newTheme);
+                updateSelection();
             });
 
             // 主题悬停预览 + 点击应用
@@ -403,19 +473,16 @@
                         applyPreset(el.getAttribute('data-preset'));
                     });
                     el.addEventListener('mouseleave', function () {
-                        if (GM_getValue('theme', 'dark') === 'dark') {
-                            applyPreset(GM_getValue('colorPreset', 'default'));
-                        } else {
-                            applyPreset('default');
-                        }
+                        applySavedState();
                     });
                     el.addEventListener('click', function () {
                         var id = el.getAttribute('data-preset');
                         GM_setValue('colorPreset', id);
-                        // 确保深色模式
-                        if (GM_getValue('theme', 'dark') !== 'dark') {
-                            toggle.classList.add('on');
-                            applyTheme('dark');
+                        // 按预设模式切换主题：浅色预设进浅色模式，其余进深色模式
+                        var target = (PRESETS[id] || {}).mode === 'light' ? 'light' : 'dark';
+                        if (GM_getValue('theme', 'dark') !== target) {
+                            toggle.classList.toggle('on', target === 'dark');
+                            applyTheme(target);
                         }
                         applyPreset(id);
                         updateSelection();

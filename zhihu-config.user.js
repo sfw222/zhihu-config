@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         知乎设置
 // @namespace    http://tampermonkey.net/
-// @version      7.2
+// @version      7.3
 // @description  知乎深色/浅色主题切换 + 多色彩主题预设 + 悬停预览 + AI 总结卡片移除
 // @author       sfw222
 // @match        https://www.zhihu.com/*
@@ -299,6 +299,9 @@
             /* ---- 泄漏色修复 ---- */
             'html[data-theme="dark"] .TopstoryItem,html[data-theme="dark"] .WriteArea,html[data-theme="dark"] .HotSearchCard,html[data-theme="dark"] .KfeCollection-CreateSaltCard,html[data-theme="dark"] .Pc-card,html[data-theme="dark"] .CreatorEntrance,html[data-theme="dark"] .Card{background-color:var(--z-bg,#191b1f)!important}',
             'html[data-theme="dark"] .TopstoryItem,html[data-theme="dark"] .HotSearchCard,html[data-theme="dark"] .Card,html[data-theme="dark"] .Pc-card{border-color:var(--z-border,#9aaaa6)!important}',
+            'html[data-theme="dark"] .LinkCard{background-color:var(--z-bg-surface,#212429)!important;border-color:var(--z-border,#282b30)!important}',
+            'html[data-theme="dark"] .LinkCard-title{color:var(--z-text-primary,#d4d4d8)!important}',
+            'html[data-theme="dark"] .LinkCard-description{color:var(--z-text-muted,#888d96)!important}',
             'html[data-theme="dark"] .SearchBar-searchButton,html[data-theme="dark"] .AppHeader-profileEntry,html[data-theme="dark"] .Sticky button,html[data-theme="dark"] .Notifications-icon,html[data-theme="dark"] .css-f8uegh{color:var(--z-text-soft,#929aab)!important;border-color:var(--z-text-soft,#929aab)!important}',
             'html[data-theme="dark"] .ContentItem-more,html[data-theme="dark"] .ContentItem-more svg{color:var(--z-text-muted,#5271b0)!important;border-color:var(--z-text-muted,#5271b0)!important}',
             'html[data-theme="dark"] a.AppHeader-profileAvatar,html[data-theme="dark"] a.AppHeader-profileAvatar img,html[data-theme="dark"] a.external{background-color:var(--z-bg-surface-raised,#09408e)!important}',

@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         知乎设置
 // @namespace    http://tampermonkey.net/
-// @version      7.1
+// @version      7.2
 // @description  知乎深色/浅色主题切换 + 多色彩主题预设 + 悬停预览 + AI 总结卡片移除
 // @author       sfw222
 // @match        https://www.zhihu.com/*
@@ -76,16 +76,16 @@
         'light-paper': {
             name: '纸张浅色',
             mode: 'light',
-            swatches: ['#f4f5f0', '#fafbf7', '#087f83', '#121716'],
+            swatches: ['#e9ece4', '#f2f5ed', '#087f83', '#121716'],
             vars: {
-                '--z-bg': '#f4f5f0',
-                '--z-bg-panel': '#fafbf7',
-                '--z-bg-panel-soft': '#f1f2ec',
-                '--z-bg-surface': '#fafbf7',
-                '--z-bg-surface-raised': '#ffffff',
-                '--z-bg-surface-hover': '#edf0e8',
-                '--z-bg-surface-muted': '#f0f2eb',
-                '--z-bg-toast': '#ffffff',
+                '--z-bg': '#e9ece4',
+                '--z-bg-panel': '#f2f5ed',
+                '--z-bg-panel-soft': '#edf0e7',
+                '--z-bg-surface': '#f2f5ed',
+                '--z-bg-surface-raised': '#f8faf4',
+                '--z-bg-surface-hover': '#e1e6d9',
+                '--z-bg-surface-muted': '#e7ebe0',
+                '--z-bg-toast': '#f8faf4',
                 '--z-text-primary': '#121716',
                 '--z-text-on-primary': '#ffffff',
                 '--z-text-body': '#303a37',
@@ -106,7 +106,7 @@
                 '--z-shadow-control': '0 10px 24px rgba(18,23,22,.05)',
                 '--z-shadow-floating': '0 28px 80px rgba(18,23,22,.10)',
                 '--z-overlay': 'rgba(18,23,22,.42)',
-                '--z-logo-lens-bg': '#eef1e9',
+                '--z-logo-lens-bg': '#e3e7db',
                 '--z-success-bg': '#deeee4',
                 '--z-success-text': '#28764d',
                 '--z-warning-bg': '#f4e8d3',
@@ -186,11 +186,14 @@
         }
     }
 
-    // 油猴菜单入口
-    GM_registerMenuCommand('打开设置面板', function () {
+    // 油猴菜单入口（面板未创建时立即创建；按 'flex' 判断，避免首次点击无响应）
+    function togglePanel() {
         var panel = document.getElementById('zhihu-settings-panel');
-        if (panel) panel.style.display = panel.style.display === 'none' ? 'flex' : 'none';
-    });
+        if (!panel && document.body) initPanel();
+        panel = document.getElementById('zhihu-settings-panel');
+        if (panel) panel.style.display = panel.style.display === 'flex' ? 'none' : 'flex';
+    }
+    GM_registerMenuCommand('打开设置面板', togglePanel);
 
     // 首次加载
     applyTheme(current);
@@ -333,8 +336,10 @@
         ].join('\n')
         .replace(/html\[data-theme="dark"\]/g, 'html:is([data-theme="dark"],[data-theme="light"].zh-light-preset)')
         +
-        /* 浅色预设修正：浅色色彩方案 + 主色改为品牌青 + 图片不压暗 */
-        '\nhtml[data-theme="light"].zh-light-preset{color-scheme:light;--color-primary:var(--z-brand,#087f83);--color-primary-strong:#0a6f73;--color-primary-hover:#0a6f73}'
+        /* 浅色预设修正：浅色色彩方案 + 主按钮浅青底深青字 + 图片不压暗 */
+        '\nhtml[data-theme="light"].zh-light-preset{color-scheme:light;--color-primary:#cfe9e6;--color-primary-strong:#b4ddd8;--color-primary-hover:#b4ddd8;--color-text-on-primary:#0a6f73}'
+        +
+        '\nhtml[data-theme="light"].zh-light-preset .WriteAnswerButton,html[data-theme="light"].zh-light-preset .FollowButton{background-color:#cfe9e6!important;color:#0a6f73!important}'
         +
         '\nhtml[data-theme="light"].zh-light-preset img{filter:none!important}';
         (document.head || root).appendChild(s);
@@ -378,8 +383,10 @@
     }
 
     // ====== 设置面板 ======
-    (function initPanel() {
+    function initPanel() {
         var setup = function () {
+            // 防止重复注入
+            if (document.getElementById('zhihu-settings-panel')) return;
             // 注入面板样式
             var ps = document.createElement('style');
             ps.id = 'zhihu-settings-panel-style';
@@ -493,6 +500,7 @@
 
         if (document.body) setup();
         else document.addEventListener('DOMContentLoaded', setup);
-    })();
+    }
+    initPanel();
 
 })();

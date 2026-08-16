@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         知乎设置
 // @namespace    http://tampermonkey.net/
-// @version      7.5
+// @version      7.6
 // @description  知乎深色/浅色主题切换 + 多色彩主题预设 + 悬停预览 + AI 总结卡片移除 + 加载时拦截统计/监控脚本
 // @author       sfw222
 // @match        https://www.zhihu.com/*
@@ -79,6 +79,19 @@
             }
         }).observe(document, { childList: true, subtree: true });
     } catch (e) {}
+
+    // 5) 兜底：扫描注入前已被解析的漏网标签（defer/async 执行点靠后，移除即不再执行）
+    var leakedScripts = document.querySelectorAll('script[src]');
+    for (var k = 0; k < leakedScripts.length; k++) {
+        var leaked = leakedScripts[k];
+        if (isBlockedScriptUrl(leaked.getAttribute('src') || '')) {
+            if (leaked.defer || leaked.async) {
+                leaked.parentNode && leaked.parentNode.removeChild(leaked);
+            } else {
+                try { leaked.src = NOOP_SCRIPT_URL; } catch (e2) {}
+            }
+        }
+    }
 
     // ====== 主题预设 ======
     var PRESETS = {

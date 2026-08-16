@@ -1,8 +1,8 @@
 // ==UserScript==
 // @name         知乎设置
 // @namespace    http://tampermonkey.net/
-// @version      7.4
-// @description  知乎深色/浅色主题切换 + 多色彩主题预设 + 悬停预览 + AI 总结卡片移除
+// @version      7.5
+// @description  知乎深色/浅色主题切换 + 多色彩主题预设 + 悬停预览 + AI 总结卡片移除 + 加载时拦截统计/监控脚本
 // @author       sfw222
 // @match        https://www.zhihu.com/*
 // @match        https://zhuanlan.zhihu.com/*
@@ -18,6 +18,67 @@
 
 (function () {
     'use strict';
+
+    // ====== 首屏开销拦截：第三方统计/监控/埋点脚本 ======
+    // 依据 Performance trace 热点：Sentry init.js(43ms) / zap.js(65ms) / aria.js(27ms) / hm.js(百度统计)
+    // 均为纯埋点脚本，阻断不影响页面功能；命中正则即替换为空操作脚本，加减匹配项即可增删拦截目标
+    var BLOCKED_SCRIPT_RE = /(za-js-sdk|zap\.js|aria\.js|hm\.baidu\.com|sentry-script)/i;
+    var NOOP_SCRIPT_URL = 'data:text/javascript;charset=utf-8,' + encodeURIComponent(
+        '(function(){console.debug("[zhihu-config] blocked:",document.currentScript&&document.currentScript.src)})()'
+    );
+
+    function isBlockedScriptUrl(v) {
+        return typeof v === 'string' && BLOCKED_SCRIPT_RE.test(v);
+    }
+
+    // 1) createElement：拦截解析期/动态创建的 <script> 的 src 赋值
+    var nativeCreateElement = document.createElement.bind(document);
+    document.createElement = function (tag, options) {
+        var el = nativeCreateElement(tag, options);
+        if (String(tag).toLowerCase() === 'script') {
+            try {
+                Object.defineProperty(el, 'src', {
+                    configurable: true,
+                    get: function () { return this.getAttribute('src') || ''; },
+                    set: function (v) { this.setAttribute('src', isBlockedScriptUrl(v) ? NOOP_SCRIPT_URL : v); }
+                });
+            } catch (e) {}
+        }
+        return el;
+    };
+
+    // 2) setAttribute：parser 与动态元素设置 src 的兜底
+    var nativeSetAttribute = Element.prototype.setAttribute;
+    Element.prototype.setAttribute = function (name, value) {
+        if (name === 'src' && this.tagName === 'SCRIPT' && isBlockedScriptUrl(value)) {
+            value = NOOP_SCRIPT_URL;
+        }
+        return nativeSetAttribute.call(this, name, value);
+    };
+
+    // 3) 原型级 src setter：动态脚本直接 script.src = url 的兜底
+    var srcDescriptor = Object.getOwnPropertyDescriptor(HTMLScriptElement.prototype, 'src');
+    if (srcDescriptor && srcDescriptor.set) {
+        Object.defineProperty(HTMLScriptElement.prototype, 'src', {
+            configurable: true,
+            get: function () { return srcDescriptor.get.call(this); },
+            set: function (v) { srcDescriptor.set.call(this, isBlockedScriptUrl(v) ? NOOP_SCRIPT_URL : v); }
+        });
+    }
+
+    // 4) 兜底：移除漏网且已挂载的匹配脚本（覆盖 appendChild 之后再设 src 的懒加载路径）
+    try {
+        new MutationObserver(function (mutations) {
+            for (var i = 0; i < mutations.length; i++) {
+                for (var j = 0; j < mutations[i].addedNodes.length; j++) {
+                    var n = mutations[i].addedNodes[j];
+                    if (n.tagName === 'SCRIPT' && isBlockedScriptUrl(n.getAttribute('src') || '')) {
+                        n.parentNode && n.parentNode.removeChild(n);
+                    }
+                }
+            }
+        }).observe(document, { childList: true, subtree: true });
+    } catch (e) {}
 
     // ====== 主题预设 ======
     var PRESETS = {
